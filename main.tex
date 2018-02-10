@@ -206,7 +206,7 @@ Bénéfices du pod :
 \item Plusieurs conteneurs dans 1 Pod\\
 => Processus qui ont besoin d'interroger un autre processus avec une faible latence.		\pause
 \item Utilisable sous plusieurs environnements (fichier de configuration indépendant de la plateforme)		\pause
-\item Mortel : un container peut mourir.		\pause
+\item Mortel : un container peut mourir.		
 \end{itemize}
 \end{frame}
 
@@ -310,25 +310,33 @@ Les ReplicatSet sont déconseiller pour faire de la mise à jour continue. \\
 \end{alertblock}
 \end{frame}
 
-\subsection{Deployment object}
-\begin{frame}{Deployment}
+\subsection{Deployment et Service}
+\begin{frame}{Deployment et Service}
 \begin{columns}
-\begin{column}{0.5\textwidth}
-Un objet Deployment
+\begin{column}{0.6\textwidth}
+\begin{block}{Deployment}
 \begin{itemize}
 	\item Possède et gère 1 ou plusieurs Replica Sets.
 	\item Permet la mise à jour continue avec 3 paramètres: 
 	\begin{itemize}
-	\item minReadySeconds: Bootup Time de l'application\\
-	\vspace{2px}
+	\item minReadySeconds %: Bootup Time de l'application\\
+	%\vspace{2px}
 	%=> Par default kubernetes considère que l'application est disponible quand Pod disponible.
-	\item maxSurge : Indique le nombre de pod supplémentaire pendant le processus d'exécution.
-	\item maxUnavailable : Nombre de pod pouvant être indisponible pendant le processus de mise à jour.
+	\item maxSurge %: Indique le nombre de pod supplémentaire pendant le processus d'exécution.
+	\item maxUnavailable% : Nombre de pod pouvant être indisponible pendant le processus de mise à jour.
 	\end{itemize}
 	\item Permet également le rollback après deployment.
 \end{itemize}
+\end{block}
+\begin{exampleblock}{Service}
+\begin{itemize}
+\item Une abstraction d'un ensemble logique de pod et d'une politique d'accès aux Pods.
+\item Adapté aux micro-services
+\item Load-balancing
+\end{itemize}
+\end{exampleblock}
 \end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.4\textwidth}
 \begin{figure}
 \centering
 \includegraphics[scale=0.4]{images/img18.png}
@@ -349,24 +357,73 @@ Un objet Deployment
 \end{figure}
 \end{frame}
 
-\subsection{Services}
-\begin{frame}{Services}
-
-
-
-
-\end{frame}
-
 \section{Kubernetes Architecture Concept}
 \subsection{Architecture concept}
 
-\subsection{Kubernetes Master}
-\begin{frame}{Kubernetes Master}
+\subsection{Kubernetes Node}
+\begin{frame}{Kubernetes Node i.e Worker Node}
+\begin{columns}
+\begin{column}{0.3\textwidth}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.2]{images/img23.png}
+\caption{Exemple de node}
+\end{figure}
+
+
+\end{column}
+\begin{column}{0.7\textwidth}
+\begin{block}{Rôle du node}
+\begin{itemize}
+\item Les pods sont exécuté dans des nodes. 
+\item Il contient les services de gestion et de communications entre les containers.
+\item Il assigne les ressources au containers qui sont ordonnancé par le master node.
+\end{itemize}
+\end{block}\pause
+\end{column}
+\end{columns}
+\begin{block}{Kubelet}
+\begin{itemize}
+\item Il est responsable de l'exécution (start/stop/maintenance)
+\item Il surveille l'état d'un pod, % et s'il n'est pas dans l'état voulu, le pod sera redéployé sur le même node. 
+communique l'état du node au master node.
+\item Interaction avec un moteur Docker sous-jacent pour démarrer des conteneurs.
+\end{itemize}
+\end{block}\pause
+\begin{block}{Kube-proxy}
+\begin{itemize}
+\item Routage du trafic vers le conteneur grâce à l'IP/Port et \textit{répartiteur de charge}.
+\end{itemize}
+\end{block}
 \end{frame}
 
-\subsection{Kubernetes Node}
-\begin{frame}{Kubernetes Node}
+\subsection{Kubernetes Master}
+\begin{frame}{Kubernetes Master}
+The master node is responsible for the management of Kubernetes cluster. This is the entry point of all administrative tasks. The master node is the one taking care of orchestrating the worker nodes, where the actual services are running.
+
+Let's dive into each of the components of the master node.
+API server
+
+The API server is the entry points for all the REST commands used to control the cluster. It processes the REST requests, validates them, and executes the bound business logic. The result state has to be persisted somewhere, and that brings us to the next component of the master node.
+etcd storage
+
+etcd is a simple, distributed, consistent key-value store. It’s mainly used for shared configuration and service discovery.
+It provides a REST API for CRUD operations as well as an interface to register watchers on specific nodes, which enables a reliable way to notify the rest of the cluster about configuration changes.
+
+An example of data stored by Kubernetes in etcd is jobs being scheduled, created and deployed, pod/service details and state, namespaces and replication information, etc.
+scheduler
+
+The deployment of configured pods and services onto the nodes happens thanks to the scheduler component.
+The scheduler has the information regarding resources available on the members of the cluster, as well as the ones required for the configured service to run and hence is able to decide where to deploy a specific service.
+controller-manager
+
+Optionally you can run different kinds of controllers inside the master node. controller-manager is a daemon embedding those.
+A controller uses apiserver to watch the shared state of the cluster and makes corrective changes to the current state to change it to the desired one.
+An example of such a controller is the Replication controller, which takes care of the number of pods in the system. The replication factor is configured by the user, and it's the controller’s responsibility to recreate a failed pod or remove an extra-scheduled one.
+Other examples of controllers are endpoints controller, namespace controller, and serviceaccounts controller, but we will not dive into details here.
 \end{frame}
+
 
 \section{Conclusion}
 \subsection{Conclusion}
