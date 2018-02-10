@@ -195,7 +195,7 @@ Bénéfices du pod :
 \begin{itemize}
 \item Plusieurs conteneurs dans 1 Pod\\
 => Processus qui ont besoin d'interroger un autre processus avec une faible latence.		\pause
-\item Utilisable sous plusieurs environnements (configuration via JSONDoc)		\pause
+\item Utilisable sous plusieurs environnements (fichier de configuration indépendant de la plateforme)		\pause
 \item Mortel : un container peut mourir.		\pause
 \end{itemize}
 \end{frame}
@@ -211,12 +211,57 @@ Bénéfices du pod :
 %    tier=back-end AND release_track=preproduction
 
 \begin{frame}{Label et Selector}
-
-
-
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{block}{Label}
+\begin{itemize}
+\item Méta-données arbitraire attaché à un objet.
+\item Forme (K:V)
+\item Représente généralement une identité.
+\end{itemize}
+\end{block}
+\begin{block}{Selector}
+\begin{itemize}
+\item Permet de sélectionner plusieurs objets.
+\item API supporte deux types de selector : 
+\begin{itemize}
+\item equality-based : "==", "=", "!=" %Question
+\item set-based : "in", "notin", "exists"
+\end{itemize}
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{images/img9.png}
+\caption{Exemple K:V format JSON}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{images/img11.png}
+\caption{Selector \textit{"equality-based"}}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{images/img10.png}
+\caption{Selector \textit{"set-based"}}
+\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
-
+\begin{frame}{Exemple d'utilisation}
+\begin{figure}
+\centering
+\includegraphics<1>[scale=0.6]{images/img12.png}
+\includegraphics<2>[scale=0.5]{images/img13.png}
+\includegraphics<3>[scale=0.5]{images/img14.png}
+\includegraphics<4>[scale=0.5]{images/img15.png}
+\includegraphics<5>[scale=0.5]{images/img16.png}
+\caption{Exemple avec différents selectors}
+\end{figure}
+\end{frame}
 
 
 
