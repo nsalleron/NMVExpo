@@ -109,8 +109,60 @@ Une communauté très active :
 \end{center}
 \end{frame}
 
+\section{Docker}
+\subsection{Some few things about Docker}
+\begin{frame}
+Docker est un conteneur léger, permettant de l'isolation entre les processus.
+\begin{center}
+\includegraphics[scale=0.3]{images/img4.jpg}
+\end{center}
+\begin{itemize}
+\item Retire le coût de la virtualisation (pas de gestion hardware)
+\item Retire le coût d'exécution de plusieurs OS.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+Docker se base sur deux technologies du noyau : 
+\begin{itemize}
+\item CGroups
+\item Namespace
+\end{itemize} \pause
+
+\begin{exampleblock}{Control Groups}
+Feature kernel qui permet de contrôler, limité et isoler l'usage des ressources pour un processus ou une collection de processus. 
+\end{exampleblock}
+\pause
+\begin{exampleblock}{Namespace}
+Feature linux qui permet de créer une vue local pour les ressources d'un systèmes. Les ressources en dehors du namespace ne sont pas visible. 
+\end{exampleblock}
+\end{frame}
 
 
+\section{Kubernetes  Core Concept}
+\subsection{Core concept}
+
+\begin{frame}{Pods}
+\end{frame}
+
+\begin{frame}{Label et Selector}
+\end{frame}
+
+\begin{frame}{Contrôleurs}
+\end{frame}
+
+\begin{frame}{Services}
+\end{frame}
+
+\section{Kubernetes Architecture Concept}
+\subsection{Architecture concept}
+
+\begin{frame}{Kubernetes Master}
+\end{frame}
+
+\begin{frame}{Kubernetes Node}
+\end{frame}
 
 
 
