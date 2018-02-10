@@ -112,6 +112,11 @@ Une communauté très active :
 \section{Docker}
 \subsection{Some few things about Docker}
 \begin{frame}
+\begin{center}
+\includegraphics[scale=0.3]{images/img5.png}
+\end{center}
+\end{frame}
+\begin{frame}
 Docker est un conteneur léger, permettant de l'isolation entre les processus.
 \begin{center}
 \includegraphics[scale=0.3]{images/img4.jpg}
@@ -132,8 +137,16 @@ Docker se base sur deux technologies du noyau :
 
 \begin{exampleblock}{Control Groups}
 Feature kernel qui permet de contrôler, limité et isoler l'usage des ressources pour un processus ou une collection de processus. 
-\end{exampleblock}
-\pause
+\end{exampleblock} \pause
+
+
+\begin{block} {CGroups Isolation}
+\begin{itemize}
+\item  Quantitative Isolation : Les CGroups ne peuvent pas avoir plus de pages que la limite imposé.
+\item Qualitative Isolation : Les CGroups doivent accéder à leur mémoire comme si elles étaient seules sur la machine.
+\end{itemize}
+\end{block} \pause
+
 \begin{exampleblock}{Namespace}
 Feature linux qui permet de créer une vue local pour les ressources d'un systèmes. Les ressources en dehors du namespace ne sont pas visible. 
 \end{exampleblock}
@@ -143,16 +156,87 @@ Feature linux qui permet de créer une vue local pour les ressources d'un systè
 \section{Kubernetes  Core Concept}
 \subsection{Core concept}
 
-\begin{frame}{Pods}
+\begin{frame}{Kubernetes}
+\begin{center}
+\includegraphics[scale=0.3]{images/img6.png}
+\end{center}
 \end{frame}
+
+\begin{frame}{Pods}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[scale=0.25]{images/img7.png}
+\caption{Les Pod dans Kubernetes}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{block}{Caractéristiques du Pod}
+
+\begin{itemize}
+\item Unité de base de l'ordonnancement. 											\pause
+\item Vue abstraite de composants conteneurisés.								\pause
+\item Il peut regrouper 1 ou * conteneurs. \\=> Couplage fort.				\pause
+\item Chaque pod possède une adresse IP unique (limité au cluster).		\pause
+\item Un Pod peut définir un volume. 
+		%comme un répertoire sur un disque local ou réseau.
+		Il a la même durée de vie que le Pod.
+\end{itemize}
+\end{block}																							\pause
+\end{column}
+
+
+
+\end{columns}
+\vspace{4px}
+Bénéfices du pod : 
+\begin{itemize}
+\item Plusieurs conteneurs dans 1 Pod\\
+=> Processus qui ont besoin d'interroger un autre processus avec une faible latence.		\pause
+\item Utilisable sous plusieurs environnements (configuration via JSONDoc)		\pause
+\item Mortel : un container peut mourir.		\pause
+\end{itemize}
+\end{frame}
+
+
+
+%Kubernetes permet à des clients (utilisateurs et composants internes) d'attacher des paires clés-valeurs appelées "labels" à n'importe quel objet d'API dans le système, par exemple les pods et les nodes. Par correspondance, les "label selectors" sont des interrogations faites sur les labels en lien avec des objets15.
+
+%Labels et selectors constituent le premier mécanisme de groupement dans Kubernetes, et sont utilisés pour déterminer les composants sur lesquels appliquer une opération18.
+
+%Par exemple, si les Pods d'une application ont des labels pour un système tier ("front-end", "back-end", par exemple) et une release_track ("preproduction", "production", par exemple), alors une opération sur tous les nodes "back-end" et "preproduction" peuvent utiliser un label selector comme suit19 :
+
+%    tier=back-end AND release_track=preproduction
 
 \begin{frame}{Label et Selector}
+
+
+
 \end{frame}
+
+
+
+
 
 \begin{frame}{Contrôleurs}
+
+
+
+
+
+
 \end{frame}
 
+
+
+
 \begin{frame}{Services}
+
+
+
+
 \end{frame}
 
 \section{Kubernetes Architecture Concept}
