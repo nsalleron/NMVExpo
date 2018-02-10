@@ -76,23 +76,32 @@ Nom venant du Grec, crée par 3 ingénieurs de chez Google en 2014.
 \item Propose une API permettant la gestion de plusieurs clouds (Google, Microsoft, Amazon, et pleins d'autres).
 \item 100\% Open Source écrit en Go.
 \end{itemize}
-\vspace{10px}
-Il permet de se focus sur les applications et non sur le déploiement.  \\
-Google exécute 2 milliards de conteneurs par semaine avec ces systèmes.\\
-Dernière version : 1.9.3 (sorti il y a 3 jours) \\ 
 
-\vspace{10px}
-\textit{"manage application, not machines" - Tim Hockin}
 
 \end{column}
 \begin{column}{0.5\textwidth}
+
+
 \begin{figure}
 \centering
 \includegraphics[scale=0.15]{images/img1.png}
 \caption{Logo de Kubernetes}
 \end{figure}
+
 \end{column}
 \end{columns}
+
+\vspace{10px}
+Il permet de se focus sur les applications et non sur le déploiement.  
+Google exécute 2 milliards de conteneurs par semaine avec ces systèmes.\\
+\vspace{10px}
+Dernière version : 1.9.3 (sortie il y a 3 jours) \\ 
+
+\vspace{10px}
+\begin{center}
+\textit{"manage application, not machines" - Tim Hockin}
+\end{center}
+
 \end{frame}
 
 \begin{frame}{Popularité}
@@ -154,7 +163,7 @@ Feature linux qui permet de créer une vue local pour les ressources d'un systè
 
 
 \section{Kubernetes  Core Concept}
-\subsection{Core concept}
+\subsection{Pods}
 
 \begin{frame}{Kubernetes}
 \begin{center}
@@ -200,7 +209,7 @@ Bénéfices du pod :
 \end{itemize}
 \end{frame}
 
-
+\subsection{Label et Selector}
 
 %Kubernetes permet à des clients (utilisateurs et composants internes) d'attacher des paires clés-valeurs appelées "labels" à n'importe quel objet d'API dans le système, par exemple les pods et les nodes. Par correspondance, les "label selectors" sont des interrogations faites sur les labels en lien avec des objets15.
 
@@ -264,19 +273,74 @@ Bénéfices du pod :
 \end{frame}
 
 
+\subsection{Réplication et Mise à jour continue}
+\begin{frame}{Les ReplicatSet}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 
-\begin{frame}{Contrôleurs}
+\begin{block}{Objectifs}
+\begin{itemize}
+	\item Gère l'unité basique dans Kubernete, le Pod.
+	\item Il s'assure que le nombre de Pod voulu est présent.
+	\begin{itemize}
+		\item Groupe les Pods via des Selectors
+		\item Si n < LIMIT : start Pod
+		\item Si n > LIMIT : kill Pod
+	\end{itemize}
+	\item Les Pods répliqués n'ont pas d'identité propre.
+	\item Ce sont des consommables.
+	\item Peut-être utilisé pour une mise à l'échelle horizontale automatisé.
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
 
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{images/img17.png}
+\caption{Mise à l'échelle horizontale automatique}
+\end{figure}
+\end{column}
+\end{columns}
 
-
-
-
-
+\begin{alertblock}{Attention}
+Les ReplicatSet sont déconseiller pour faire de la mise à jour continue. \\
+=> A utiliser seulement pour des applications n'ayant pas besoin de mise à jour
+\end{alertblock}
 \end{frame}
 
+\subsection{Deployment object}
+\begin{frame}{Deployment}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+Un objet Deployment
+\begin{itemize}
+	\item Possède et gère 1 ou plusieurs Replica Sets.
+	\item Permet la mise à jour continue avec 3 paramètres: 
+	\begin{itemize}
+	\item minReadySeconds: Bootup Time de l'application\\
+	\vspace{2px}
+	%=> Par default kubernetes considère que l'application est disponible quand Pod disponible.
+	\item maxSurge : Indique le nombre de pod supplémentaire pendant le processus d'exécution.
+	\item maxUnavailable : Nombre de pod pouvant être indisponible pendant le processus de mise à jour.
+	\end{itemize}
+	\item Permet également le rollback après deployment.
+\end{itemize}
 
 
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{images/img18.png}
+\caption{Relation entre Objet Deployment, ReplicatSet et Pod}
+\end{figure}
 
+\end{column}
+\end{columns}
+\end{frame}
+
+\subsection{Services}
 \begin{frame}{Services}
 
 
@@ -287,15 +351,23 @@ Bénéfices du pod :
 \section{Kubernetes Architecture Concept}
 \subsection{Architecture concept}
 
+\subsection{Kubernetes Master}
 \begin{frame}{Kubernetes Master}
 \end{frame}
 
+\subsection{Kubernetes Node}
 \begin{frame}{Kubernetes Node}
 \end{frame}
 
+\section{Conclusion}
+\subsection{Conclusion}
+\begin{frame}{Conclusion}
+
+\end{frame}
 
 
 \end{document}
+
 
 
 
