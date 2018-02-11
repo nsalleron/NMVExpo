@@ -487,6 +487,7 @@ D'après le commit 5871b50 de https://github.com/kubernetes/kubernetes/ il y a 3
 \textcolor{Framarouge}{func }\textcolor{Framaviolet}{(}\textcolor{Framaorange}{sched }\textcolor{Framaviolet}{*}\textcolor{Framaorange}{Scheduler}\textcolor{Framaviolet}{)} \textcolor{Framaviolet}{scheduleOne}() \{ \textcolor{Framavert}{// Etape 2  : Récupération du prochain pod} \\
 \hspace{10px}	pod \textcolor{Framarouge}{:=} sched.config.\textcolor{Framableu}{getNextPod}() \\
 \hspace{10px}    \textcolor{Framavert}{// Autres élements du scheduler}\\
+\hspace{10px}    \textcolor{Framavert}{// Call de la fonction schedule}\\
 \} \\ \pause
 \vspace{10px}
 \textcolor{Framarouge}{func} \textcolor{Framaviolet}{(}
@@ -502,14 +503,79 @@ D'après le commit 5871b50 de https://github.com/kubernetes/kubernetes/ il y a 3
 \end{frame}
 
 \begin{frame}{Comment Kubernetes Scheduler détermine-t-il le bon node pour ce pod?}
-TODO : \url{https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s}
+\begin{itemize}
+\item 2 ensemble de fonctions, exécuté indépendamment l'un de l'autre.
+\begin{itemize}
+\item Predicates : Détermine quel node est adéquat pour recevoir le Pod.
+\item Priorities : Donne un score pour chaque node restant de la première phase.
+\end{itemize}
+\item Le scheduler choisit le node avec le plus haut score.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{images/img26.png}
+\caption{Overview du Kubernetes Scheduler}
+\end{figure}
 \end{frame}
 
-\subsection{Algorithm for the Replication Controller}
-\begin{frame}{Mon petit Replication Controller}
 
+\begin{frame}{Comment Kubernetes Scheduler détermine-t-il le bon node pour ce pod?}
+Dans le code : \\
+\textcolor{Framarouge}{func }\textcolor{Framaviolet}{(}\textcolor{Framaorange}{sched }\textcolor{Framaviolet}{*}\textcolor{Framaorange}{Scheduler}\textcolor{Framaviolet}{)} \textcolor{Framaviolet}{scheduleOne}() \{  \\
+\hspace{10px}    \textcolor{Framavert}{// Call de la fonction schedule}\\
+
+
+\hspace{10px}suggestedHost, err \textcolor{Framarouge}{:=} sched.\textcolor{Framableu}{schedule}(pod)	\\
+\hspace{10px}\textcolor{Framarouge}{if} err != \textcolor{Framableu}{nil} \{	\\
+\hspace{10px}\hspace{10px}	// schedule() may have failed because the pod would not fit on any host \\
+	\hspace{10px}\hspace{10px}	\textcolor{Framarouge}{return}	\\
+	\hspace{10px}\}	\\
+\hspace{10px}    \textcolor{Framavert}{// Bind suggestedHost et Pod}\\
+\}\\
+\vspace{10px}
+\textcolor{Framarouge}{func }\textcolor{Framaviolet}{(}\textcolor{Framaorange}{sched} \textcolor{Framaviolet}{*}\textcolor{Framaorange}{Scheduler}\textcolor{Framaviolet}{)}  \textcolor{Framaviolet}{schedule}(\textcolor{Framaorange}{pod} *\textcolor{Framaorange}{v1}.\textcolor{Framaorange}{Pod}) (\textcolor{Framaorange}{string}, \textcolor{Framaorange}{error}) \{	\\
+\hspace{10px}host, err \textcolor{Framarouge}{:=} sched.config.Algorithm.\textcolor{Framableu}{Schedule}(pod, sched.config.NodeLister)	\\
+\hspace{10px}\textcolor{Framarouge}{if} err != \textcolor{Framableu}{nil} \{	\\
+\hspace{20px}		\textcolor{Framavert}{//Traitement d'erreur}	\\
+\hspace{20px}		\textcolor{Framarouge}{return} "", err	\\
+\hspace{10px}	\}	\\
+\hspace{10px}	\textcolor{Framarouge}{return} host, err	\\
+\}\\
 \end{frame}
 
+\begin{frame}{Comment Kubernetes Scheduler détermine-t-il le bon node pour ce pod?}
+Le scheduler est configurable au startup de kubernetes.
+\begin{block}{Les fonctions de la phase \textbf{Predicates}}
+\begin{itemize}
+\item Prevent overcommit : Le node donné rempli-t-il les exigences en terme de ressource du pod?\\
+%=> Pour chaque node, on additionne toutes les exigences de chaque Pods présent sur le node + le nouveau node et l'on soustrait l'ensemble à la capacité du node. \\
+%=> On regarde ensuite s'il reste assez pour notre node
+\item Prevent co-scheduling : On ne veut pas que notre Pod (Type A) se retrouve avec un autre Pod (Type B) via PodAntiAffinity.\\
+%=> Exemple d'un pod Chien et d'un pod Chat, on ne veut surtout pas qu'il soient ensemble car s'ils sont ensemble ils sont inéfficace.
+\item Force co-scheduling : On veut que notre Pod (Type A) se retrouve avec un autre Pod (Type B) via PodAffinity.
+%=> Exemple de deux pods communiquant l'un avec l'autre réclament beaucoup d'accès réseau. C'est mieux de les placer ensemble.
+\item Dedicated-machines : On reserve certains node à certain type de pod
+%=> Exemple d'un service réclament beaucoup beaucoup de micro pod, cela occupe trop de place, donc on reserve des nodes à d'autres services.
+\item Others...
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Comment Kubernetes Scheduler détermine-t-il le bon node pour ce pod?}
+Les priorités : répond au problème du nombre de node restant après la première phase (ce dernier pouvant être très grand)
+\begin{block}{Les fonctions de la phase \textbf{Priorities}}
+\begin{itemize}
+\item Best fit : Minimise la mémoire perdu à un instant t.
+\item Worst fit : Maximise la mémoire perdu à un instant t.
+\item CalculateSpreadPriority : Répartition des pods entre hôtes en prenant en compte les pods appartenant au même service ou au même contrôleur de réplication. \\
+=> commit e273d89 du 14 Mar 2017.
+\item NodeAffinityPriority : Préférence pour que un pod soit sur un node.
+\item PodAffinityPriority/PodAntiAffinityPriority : Préférence pour qu'un pod soit sur le même node (ou non) qu'un autre pod.
+\end{itemize}
+\end{block}
+Une fois l'ensemble des fonctions exécutés, le scheduler prend celui avec le plus haut score.
+\end{frame}
 
 \section{Conclusion}
 \subsection{Conclusion}
@@ -545,7 +611,7 @@ TODO : \url{https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s}
 \item Nune Isabekyan. 2016. Introduction to Kubernetes Architecture</em>. [ONLINE] Available at: \url{https://x-team.com/blog/introduction-kubernetes-architecture/}. [Accessed 10 February 2018].
 \item Julia Evans. 2017. A few things I've learned about Kubernetes. [ONLINE] Available at: \url{https://jvns.ca/blog/2017/06/04/learning-about-kubernetes/}. [Accessed 10 February 2018].
 \item Julia Evans. 2018. How does the Kubernetes scheduler work?. [ONLINE] Available at: \url{https://jvns.ca/blog/2017/07/27/how-does-the-kubernetes-scheduler-work/}. [Accessed 10 February 2018].
-\item YouTube. (2018). Kubernetes Scheduling Features or How Can I Make the System Do What I Want? [I] - Marek Grabowski. [Online Video]. 17 April 2017. Available from: \url{https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s}. [Accessed: 10 February 2018].
+\item YouTube. (2018). Kubernetes Scheduling Features or How Can I Make the System Do What I Want? [I] - Marek Grabowski \& Wojciech Tyczynski. [Online Video]. 17 April 2017. Available from: \url{https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s}. [Accessed: 10 February 2018].
 \end{itemize}
 \end{frame}
 
