@@ -94,9 +94,9 @@ Nom venant du Grec, crée par 3 ingénieurs de chez Google en 2014.
 
 \vspace{10px}
 Il permet de se focus sur les applications et non sur le déploiement.  
-Google exécute 2 milliards de conteneurs par semaine avec ces systèmes.\\
+Google exécute 2 milliards de conteneurs par semaine avec ces systèmes.\\\pause
 \vspace{10px}
-Dernière version : 1.9.3 (sortie il y a 3 jours) \\ 
+Dernière version : 1.9.3 (sortie il y a 3 jours) \\ \pause
 
 \vspace{10px}
 \begin{center}
@@ -400,6 +400,10 @@ communique l'état du node au master node.
 
 \subsection{Kubernetes Master}
 \begin{frame}{Kubernetes Master}
+
+
+
+
 The master node is responsible for the management of Kubernetes cluster. This is the entry point of all administrative tasks. The master node is the one taking care of orchestrating the worker nodes, where the actual services are running.
 
 Let's dive into each of the components of the master node.
@@ -422,6 +426,23 @@ Optionally you can run different kinds of controllers inside the master node. co
 A controller uses apiserver to watch the shared state of the cluster and makes corrective changes to the current state to change it to the desired one.
 An example of such a controller is the Replication controller, which takes care of the number of pods in the system. The replication factor is configured by the user, and it's the controller’s responsibility to recreate a failed pod or remove an extra-scheduled one.
 Other examples of controllers are endpoints controller, namespace controller, and serviceaccounts controller, but we will not dive into details here.
+\end{frame}
+
+\subsection{General Overview}
+\begin{frame}{Kubernetes Overview}
+\begin{figure}
+\centering
+\includegraphics[scale=0.37]{images/img24.png}
+\caption{Overview}
+\end{figure}
+\end{frame}
+
+
+
+\section{Kubernetes scheduler work }
+\subsection{Basic Algorithm}
+\begin{frame}{Algo}
+
 \end{frame}
 
 
