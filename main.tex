@@ -400,7 +400,15 @@ communique l'état du node au master node.
 
 \subsection{Kubernetes Master}
 \begin{frame}{Kubernetes Master}
-
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{figure}
+\centering
+\includegraphics[scale=0.25]{images/img25.png}
+\caption{Exemple de master node}
+\end{figure}
+\end{column}
+\begin{column}{0.6\textwidth}
 \begin{block}{Master Node}
 Le master node est responsable du management du cluster Kubernetes.
 \begin{itemize}
@@ -409,23 +417,31 @@ Le master node est responsable du management du cluster Kubernetes.
 \item Il est composé de plusieurs sous éléments.
 \end{itemize}
 \end{block}
-
-\begin{block}{API Server}
-C'est le point d'entrée pour toutes les commandes utilisé pour contrôler le cluster.\\
-Il récupère les commandes (REST), les valides, et les exécutes.  \\Le résultat de ces commandes est conservé dans \textit{etcd}.
-\end{block}
-
-\begin{block}{etcd}
-etcd est utilisé pour partager la configuration et la découverte de service.\\ Il fournit une API pour des opérations CRUD et permet aux nœuds de s'enregistrer (pour pouvoir être informé d'un changement de configuration)\\
-\vspace{10px}
-Exemple : la création de pod/service, l'état, namespaces, replication information.
+\end{column}
+\end{columns}
+\begin{block}{Master Node - l'API Server}
+\begin{itemize}
+\item C'est le point d'entrée pour toutes les commandes utilisé pour contrôler le cluster.
+\item Il récupère les commandes (REST), les valides, et les exécutes.  
+\item Le résultat de ces commandes est conservé dans \textit{etcd}.
+\end{itemize}
 
 \end{block}
 \end{frame}
 
 
 \begin{frame}{Kubernetes Master}
-\begin{block}{kube-scheduler}
+
+\begin{block}{Master Node - etcd}
+\begin{itemize}
+\item etcd est utilisé pour partager la configuration et la découverte de service.
+\item API pour des opérations CRUD et permet aux nœuds de s'enregistrer %(pour pouvoir être informé d'un changement de configuration)
+\end{itemize}
+%\vspace{10px}
+%Exemple : la création de pod/service, l'état, namespaces, replication information.
+\end{block}
+
+\begin{block}{Master Node - kube-scheduler}
 Le scheduler permet le deployment de pods configurer et de services sur les nodes.
 \begin{itemize}
 \item Il possède les informations des ressources disponibles.
@@ -434,7 +450,8 @@ Le scheduler permet le deployment de pods configurer et de services sur les node
 \end{itemize}
 \end{block}
 
-\begin{block}{kube-controller-manager}
+
+\begin{block}{Master Node - kube-controller-manager}
 C'est un composant qui possède plusieurs controllers.
 \begin{itemize}
 \item Node Controller : Responsable de la bonne gestion des noeuds.
@@ -442,6 +459,8 @@ C'est un composant qui possède plusieurs controllers.
 \item Endpoints Controller : Service qui associe service et pods.
 \end{itemize}
 \end{block}
+
+
 \end{frame}
 
 
