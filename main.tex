@@ -47,7 +47,7 @@
 	\item Développé en interne.
 	\item Manager de containers.
 	\item Objectif : réduction des coups en partageant machines et applications.
-	\item \textbf{Inconvéniant : notion de travail, gestion des ports}
+	\item \textbf{Inconvénient : notion de travail, gestion des ports}
 	\item \textbf{Non open-source.}
 	\end{itemize}	\pause
 \item Omega	
@@ -70,7 +70,7 @@
 \begin{columns}
 \begin{column}{0.5\textwidth}
 
-Nom venant du Grec, crée par 3 ingénieurs de chez Google en 2014.
+Nom venant du Grec, créé par 3 ingénieurs de chez Google en 2014.
 \begin{itemize}
 \item \textit{Orchestrateur} - Gestionnaire de conteneur.
 \item Exécute et manages des containers.
@@ -179,7 +179,7 @@ Feature linux qui permet de créer une vue local pour les ressources d'un systè
 \begin{figure}
 \centering
 \includegraphics[scale=0.25]{images/img7.png}
-\caption{Les Pod dans Kubernetes}
+\caption{Les Pods dans Kubernetes}
 \end{figure}
 \end{column}
 \begin{column}{0.5\textwidth}
@@ -282,7 +282,7 @@ Bénéfices du pod :
 \begin{block}{Objectifs}
 \begin{itemize}
 	\item Gère l'unité basique dans Kubernete, le Pod.
-	\item Il s'assure que le nombre de Pod voulu est présent.
+	\item Il s'assure que le nombre de Pods voulu est présent.
 	\begin{itemize}
 		\item Groupe les Pods via des Selectors
 		\item Si n < LIMIT : start Pod
@@ -290,7 +290,7 @@ Bénéfices du pod :
 	\end{itemize}
 	\item Les Pods répliqués n'ont pas d'identité propre.
 	\item Ce sont des consommables.
-	\item Peut-être utilisé pour une mise à l'échelle horizontale automatisé.
+	\item Peut être utilisé pour une mise à l'échelle horizontale automatisée.
 \end{itemize}
 \end{block}
 \end{column}
@@ -305,8 +305,8 @@ Bénéfices du pod :
 \end{columns}
 
 \begin{alertblock}{Attention}
-Les ReplicatSet sont déconseiller pour faire de la mise à jour continue. \\
-=> A utiliser seulement pour des applications n'ayant pas besoin de mise à jour
+Les ReplicatSet sont déconseillés pour faire de la mise à jour continue. \\
+=> A utiliser seulement pour des applications n'ayant pas besoin de mise à jour.
 \end{alertblock}
 \end{frame}
 
@@ -330,7 +330,7 @@ Les ReplicatSet sont déconseiller pour faire de la mise à jour continue. \\
 \end{block}
 \begin{exampleblock}{Service}
 \begin{itemize}
-\item Une abstraction d'un ensemble logique de pod et d'une politique d'accès aux Pods.
+\item Une abstraction d'un ensemble logique de Pods et d'une politique d'accès aux Pods.
 \item Adapté aux micro-services
 \item Load-balancing
 \end{itemize}
@@ -371,14 +371,13 @@ Les ReplicatSet sont déconseiller pour faire de la mise à jour continue. \\
 \caption{Exemple de node}
 \end{figure}
 
-
 \end{column}
 \begin{column}{0.7\textwidth}
 \begin{block}{Rôle du node}
 \begin{itemize}
-\item Les pods sont exécuté dans des nodes. 
+\item Les Pods sont exécutés dans des Nodes. 
 \item Il contient les services de gestion et de communications entre les containers.
-\item Il assigne les ressources au containers qui sont ordonnancé par le master node.
+\item Il assigne les ressources au containers qui sont ordonnancé par le Master Node.
 \end{itemize}
 \end{block}\pause
 \end{column}
@@ -386,14 +385,14 @@ Les ReplicatSet sont déconseiller pour faire de la mise à jour continue. \\
 \begin{block}{Kubelet}
 \begin{itemize}
 \item Il est responsable de l'exécution (start/stop/maintenance)
-\item Il surveille l'état d'un pod, % et s'il n'est pas dans l'état voulu, le pod sera redéployé sur le même node. 
+\item Il surveille l'état d'un Pod ou d'un ensemble de Pod, % et s'il n'est pas dans l'état voulu, le pod sera redéployé sur le même node. 
 communique l'état du node au master node.
 \item Interaction avec un moteur Docker sous-jacent pour démarrer des conteneurs.
 \end{itemize}
 \end{block}\pause
 \begin{block}{Kube-proxy}
 \begin{itemize}
-\item Routage du trafic vers le conteneur grâce à l'IP/Port et \textit{répartiteur de charge}.
+\item Routage du trafic vers le conteneur grâce à l'IP:Port et \textit{répartiteur de charge}.
 \end{itemize}
 \end{block}
 \end{frame}
@@ -410,9 +409,9 @@ communique l'état du node au master node.
 \end{column}
 \begin{column}{0.6\textwidth}
 \begin{block}{Master Node}
-Le master node est responsable du management du cluster Kubernetes.
+Le Master Node est responsable du management du cluster Kubernetes.
 \begin{itemize}
-\item C'est le point d'entré de toutes les tâches administratives.
+\item C'est le point d'entrée de toutes les tâches administratives.
 \item Il est le responsable de \textit{l'orchestration} des worker-nodes 
 \item Il est composé de plusieurs sous éléments.
 \end{itemize}
@@ -421,8 +420,8 @@ Le master node est responsable du management du cluster Kubernetes.
 \end{columns}\pause
 \begin{block}{Master Node - l'API Server}
 \begin{itemize}
-\item C'est le point d'entrée pour toutes les commandes utilisé pour contrôler le cluster.
-\item Il récupère les commandes (REST), les valides, et les exécutes.  
+\item C'est le point d'entrée pour toutes les commandes utilisées pour contrôler le cluster.
+\item Il récupère les commandes (REST), les valide, et les exécute.  
 \item Le résultat de ces commandes est conservé dans \textit{etcd}.
 \end{itemize}
 
@@ -442,7 +441,7 @@ Le master node est responsable du management du cluster Kubernetes.
 \end{block} \pause
 
 \begin{block}{Master Node - kube-scheduler}
-Le scheduler permet le deployment de pods configurer et de services sur les nodes.
+Le scheduler permet le déploiement de Pods configurés et de services sur les Nodes.
 \begin{itemize}
 \item Il possède les informations des ressources disponibles.
 \item Il possède également les informations requises pour l'exécution du service.
@@ -454,9 +453,9 @@ Le scheduler permet le deployment de pods configurer et de services sur les node
 \begin{block}{Master Node - kube-controller-manager}
 C'est un composant qui possède plusieurs controllers.
 \begin{itemize}
-\item Node Controller : Responsable de la bonne gestion des noeuds.
-\item Replication Controller : Responsable du maintient du bon nombre de pods pour chaque ReplicatSet objet du système.
-\item Endpoints Controller : Service qui associe service et pods.
+\item Node Controller : Responsable de la bonne gestion des Nodes.
+\item Replication Controller : Responsable du maintient du bon nombre de Pods pour chaque ReplicatSet objet du système.
+\item Endpoints Controller : service qui associe Service et Pods.
 \end{itemize}
 \end{block}
 
@@ -499,16 +498,16 @@ D'après le commit 5871b50 de https://github.com/kubernetes/kubernetes/ il y a 3
 \hspace{10px}	\} \\
 \hspace{10px}	return  \textcolor{Framableu}{nil}\\
 \} \pause
-\textcolor{Framavert}{//Les pods sont ajouté à la queue par un EventHandler}
+\textcolor{Framavert}{//Les Pods sont ajoutés à la queue par un EventHandler}
 
 \end{frame}
 
 \begin{frame}{Comment Kubernetes Scheduler détermine-t-il le bon node pour ce pod?}
 \begin{itemize}
-\item 2 ensemble de fonctions, exécuté indépendamment l'un de l'autre.
+\item 2 ensembles de fonctions, exécutées indépendamment l'une de l'autre.
 \begin{itemize}
-\item Predicates : Détermine quel node est adéquat pour recevoir le Pod.
-\item Priorities : Donne un score pour chaque node restant de la première phase.
+\item Predicates : détermine quel Node est adéquat pour recevoir le Pod.
+\item Priorities : donne un score pour chaque node restant de la première phase.
 \end{itemize}
 \item Le scheduler choisit le node avec le plus haut score.
 \end{itemize}
@@ -550,7 +549,7 @@ Dans le code : \\
 Le scheduler est configurable au startup de kubernetes.
 \begin{block}{Les fonctions de la phase \textbf{Predicates}}
 \begin{itemize}
-\item Prevent overcommit : Le node donné rempli-t-il les exigences en terme de ressource du pod?\\
+\item Prevent overcommit : Le node donné rempli-t-il les exigences en termes de ressources du pod?\\
 %=> Pour chaque node, on additionne toutes les exigences de chaque Pods présent sur le node + le nouveau node et l'on soustrait l'ensemble à la capacité du node. \\
 %=> On regarde ensuite s'il reste assez pour notre node
 \pause
@@ -560,7 +559,7 @@ Le scheduler est configurable au startup de kubernetes.
 \item Force co-scheduling : On veut que notre Pod (Type A) se retrouve avec un autre Pod (Type B) via PodAffinity.
 %=> Exemple de deux pods communiquant l'un avec l'autre réclament beaucoup d'accès réseau. C'est mieux de les placer ensemble.
 \pause
-\item Dedicated-machines : On reserve certains node à certain type de pod
+\item Dedicated-machines : On réserve certains Nodes à certains types de Pods.
 %=> Exemple d'un service réclament beaucoup beaucoup de micro pod, cela occupe trop de place, donc on reserve des nodes à d'autres services.
 \item Others...
 \end{itemize}
@@ -568,18 +567,18 @@ Le scheduler est configurable au startup de kubernetes.
 \end{frame}
 
 \begin{frame}{Comment Kubernetes Scheduler détermine-t-il le bon node pour ce pod?}
-Les priorités : répond au problème du nombre de node restant après la première phase (ce dernier pouvant être très grand)
+Les priorités : répond au problème du nombre de Nodes restants après la première phase (ce dernier pouvant être très grand).
 \begin{block}{Les fonctions de la phase \textbf{Priorities}}
 \begin{itemize}
 \item Best fit : Minimise la mémoire perdu à un instant t.\pause
 \item Worst fit : Maximise la mémoire perdu à un instant t.\pause
-\item CalculateSpreadPriority : Répartition des pods entre hôtes en prenant en compte les pods appartenant au même service ou au même contrôleur de réplication. \\
+\item CalculateSpreadPriority : Répartition des Pods entre hôtes en prenant en compte les Pods appartenant au même service ou au même contrôleur de réplication. \\
 => commit e273d89 du 14 Mar 2017.\pause
-\item NodeAffinityPriority : Préférence pour que un pod soit sur un node.\pause
-\item PodAffinityPriority/PodAntiAffinityPriority : Préférence pour qu'un pod soit sur le même node (ou non) qu'un autre pod.
+\item NodeAffinityPriority : Préférence pour qu'un Pod soit sur un Node.\pause
+\item PodAffinityPriority/PodAntiAffinityPriority : Préférence pour qu'un Pod soit sur le même Node (ou non) qu'un autre Pod.
 \end{itemize}
 \end{block}
-Une fois l'ensemble des fonctions exécutés, le scheduler prend celui avec le plus haut score.
+Une fois l'ensemble des fonctions exécuté, le scheduler prend celui avec le plus haut score.
 \end{frame}
 
 \section{Conclusion}
@@ -595,11 +594,11 @@ Une fois l'ensemble des fonctions exécutés, le scheduler prend celui avec le p
 \item Deployment
 \item Service
 \end{itemize}
-\item Il possède un node master et 1 ou plusieurs worker node.
-\item Son scheduler est configurable et se compose de deux faces 
+\item Il possède un Node master et 1 ou plusieurs worker Node(s).
+\item Son scheduler est configurable et se compose de deux phases:  
 \begin{itemize}
-\item \textbf{\textit{Predicates}}: qui retournera un subset de nodes correspondant aux prédicats
-\item \textbf{\textit{Priorities}}: qui assignera un score à chaque node. Le node ayant la priorité la plus haute sera choisit pour accueillir le pod.
+\item \textbf{\textit{Predicates}}: qui retournera un subset de Nodes correspondant aux prédicats:
+\item \textbf{\textit{Priorities}}: qui assignera un score à chaque Node. Le Node ayant la priorité la plus haute sera choisi pour accueillir le Pod.
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -630,7 +629,7 @@ Une fois l'ensemble des fonctions exécutés, le scheduler prend celui avec le p
 \item Nune Isabekyan. 2016. Introduction to Kubernetes Architecture</em>. [ONLINE] Available at: \url{https://x-team.com/blog/introduction-kubernetes-architecture/}. [Accessed 10 February 2018].
 \item Julia Evans. 2017. A few things I've learned about Kubernetes. [ONLINE] Available at: \url{https://jvns.ca/blog/2017/06/04/learning-about-kubernetes/}. [Accessed 10 February 2018].
 \item Julia Evans. 2018. How does the Kubernetes scheduler work?. [ONLINE] Available at: \url{https://jvns.ca/blog/2017/07/27/how-does-the-kubernetes-scheduler-work/}. [Accessed 10 February 2018].
-\item YouTube. (2018). Kubernetes Scheduling Features or How Can I Make the System Do What I Want? [I] - Marek Grabowski \& Wojciech Tyczynski. [Online Video]. 17 April 2017. Available from: \url{https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s}. [Accessed: 10 February 2018].
+\item YouTube. (2018). Kubernetes Scheduling Features or How can I make the system do what I want? [I] - Marek Grabowski \& Wojciech Tyczynski. [Online Video]. 17 April 2017. Available from: \url{https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s}. [Accessed: 10 February 2018].
 \end{itemize}
 \end{frame}
 
@@ -640,6 +639,9 @@ Une fois l'ensemble des fonctions exécutés, le scheduler prend celui avec le p
 
 \item YouTube. (2018). Container clusters with Kubernetes -Tim Hockin. [Online Video]. 21 April 2015. Available from: \url{https://www.youtube.com/watch?v=KIdK5WGZUms}. [Accessed: 10 February 2018].
 \item YouTube. (2018). Dockers Containers \& Kubernetes - Brian Dorsey. [Online Video]. 7 June 2015. Available from: \url{https://www.youtube.com/watch?v=BaHp8YXIsD0}. [Accessed: 10 February 2018].
+
+\item GitHub - lavalamp, junxu, ravisantoshgudimetla, misterikkit, krousey, hurf, eparis, bsalamat. 2017. scheduler.go. [ONLINE] Available at: \url{https://github.com/kubernetes/kubernetes/blob/c179b8a05c38e66a9638747bc407ec6cbadcbb86/pkg/scheduler/scheduler.go}. [Accessed 11 February 2018].
+\item GitHub - piosz. 2017. selector\_spreading.go. [ONLINE] Available at: \url{https://github.com/kubernetes/contrib/blob/master/rescheduler/vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/priorities/selector_spreading.go}. [Accessed 11 February 2018].
 \end{itemize}
 \end{frame}
 
