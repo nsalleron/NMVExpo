@@ -475,9 +475,38 @@ C'est un composant qui possède plusieurs controllers.
 
 
 
-\section{Kubernetes scheduler work }
-\subsection{Basic Algorithm}
-\begin{frame}{Algo}
+\section{Kubernetes Scheduler / Replication Controller}
+\subsection{Algorithm for the scheduler}
+\begin{frame}{Comment Kubernetes Scheduler récupère-t-il un Pod?}
+D'après le commit 5871b50 de https://github.com/kubernetes/kubernetes/ il y a 3 grandes étapes : 
+\vspace{10px} \\
+
+\textcolor{Framavert}{// Etape 1 : lancement d'une goroutine sched.scheduleOne\\}
+\textcolor{Framarouge}{go} wait.\textcolor{Framableu}{Until}(sched.scheduleOne, \textcolor{Framableu}{0}, sched.config.StopEverything) \pause
+\vspace{10px}\\
+\textcolor{Framarouge}{func }\textcolor{Framaviolet}{(}\textcolor{Framaorange}{sched }\textcolor{Framaviolet}{*}\textcolor{Framaorange}{Scheduler}\textcolor{Framaviolet}{)} \textcolor{Framaviolet}{scheduleOne}() \{ \textcolor{Framavert}{// Etape 2  : Récupération du prochain pod} \\
+\hspace{10px}	pod \textcolor{Framarouge}{:=} sched.config.\textcolor{Framableu}{getNextPod}() \\
+\hspace{10px}    \textcolor{Framavert}{// Autres élements du scheduler}\\
+\} \\ \pause
+\vspace{10px}
+\textcolor{Framarouge}{func} \textcolor{Framaviolet}{(}
+\textcolor{Framaorange}{c} \textcolor{Framaviolet}{*}\textcolor{Framaorange}{configFactory}\textcolor{Framaviolet}{) getNextPod()} *\textcolor{Framaorange}{v1.Pod} \{  \\
+\hspace{10px}pod, err \textcolor{Framarouge}{:=} c.podQueue.\textcolor{Framableu}{Pop}() \textcolor{Framavert}{// Etape 3 : On retire le pod d'une file de Pod}\\
+\hspace{10px}\textcolor{Framaorange}{if} err == \textcolor{Framableu}{nil} \{ \\
+\hspace{10px}\hspace{10px}	return pod \\
+\hspace{10px}	\} \\
+\hspace{10px}	return  \textcolor{Framableu}{nil}\\
+\} \pause
+\textcolor{Framavert}{//Les pods sont ajouté à la queue par un EventHandler}
+
+\end{frame}
+
+\begin{frame}{Comment Kubernetes Scheduler place-t-il ce Pod?}
+TODO : https://www.youtube.com/watch?v=bbPcb2JuJPw&t=601s
+\end{frame}
+
+\subsection{Algorithm for the Replication Controller}
+\begin{frame}{Mon petit Replication Controller}
 
 \end{frame}
 
@@ -488,7 +517,7 @@ C'est un composant qui possède plusieurs controllers.
 
 \end{frame}
 
-
+\subsection{Références}
 \end{document}
 
 
